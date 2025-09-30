@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Tarefas</title>
+    <style>
+        .responsavel-input-group { display: flex; align-items: center; margin-bottom: 5px; }
+        .responsavel-input-group input { flex-grow: 1; }
+        .btn-remover { background-color: #dc3545; color: white; border: none; padding: 5px 10px; margin-left: 10px; cursor: pointer; border-radius: 4px; }
+        #btn-add-responsavel { background-color: #17a2b8; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px; margin-top: 5px; }
+    </style>
+    <link rel="stylesheet" href="style.css"> </head>
+
+<body>
+<div class="container">
+    <h1>Gerenciador de Tarefas</h1>
+
+    <div id="message-area" class="message-area"></div>
+
+    <div id="task-list-view">
+        <div id="task-list"></div>
+        <button id="btn-show-form">Incluir nova tarefa</button>
+    </div>
+
+    <div id="task-form-view" class="hidden">
+        <h2>Nova tarefa</h2>
+        <form id="task-form">
+            <div class="form-group">
+                <label for="titulo">Título</label>
+                <input type="text" id="titulo" name="titulo" required>
+            </div>
+
+            <div class="form-group">
+                <label>Responsáveis</label>
+                <div id="responsaveis-container">
+                    <div class="responsavel-input-group">
+                        <input type="text" name="responsavel" class="responsavel-input" placeholder="Nome do responsável" required>
+                    </div>
+                </div>
+                <button type="button" id="btn-add-responsavel">+ Adicionar Responsável</button>
+            </div>
+            <div class="form-group">
+                <label for="dataTermino">Data de término</label>
+                <input type="date" id="dataTermino" name="dataTermino" required>
+            </div>
+            <div class="form-group">
+                <label for="detalhamento">Detalhamento</label>
+                <textarea id="detalhamento" name="detalhamento" rows="4"></textarea>
+            </div>
+            <div class="form-buttons">
+                <button type="submit" class="btn-salvar">Salvar</button>
+                <button type="button" id="btn-cancel" class="btn-cancelar">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="script.js" defer></script> </body>
+</html>
