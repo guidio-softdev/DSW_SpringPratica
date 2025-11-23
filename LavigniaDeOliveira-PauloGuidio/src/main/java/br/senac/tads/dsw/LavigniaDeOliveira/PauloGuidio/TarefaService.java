@@ -3,45 +3,55 @@ package br.senac.tads.dsw.LavigniaDeOliveira.PauloGuidio;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
+
 
 @Service
 public class TarefaService {
+     private final TarefaRepository tarefaRepository;
+   
+public TarefaService(TarefaRepository tarefaRepository) {
+        this.tarefaRepository = tarefaRepository;}
 
-    private final Map<String, TarefaDto> mapTarefas;
-
-    public TarefaService() {
-        mapTarefas = new HashMap<>();
-
-
-        TarefaDto tarefa1 = new TarefaDto(
-                "Fazer almoço da semana",
-                "Fulano da Silva",
-                LocalDate.parse("2025-09-20"),
-                "Preparar o almoço para família");
-        mapTarefas.put(tarefa1.getTitulo(), tarefa1);
-
-        TarefaDto tarefa2 = new TarefaDto(
-                "Prova de DSW",
-                "Ciclano de Souza",
-                LocalDate.parse("2025-10-11"),
-                "Preparar o resumo da prova para usar como consulta");
-        mapTarefas.put(tarefa2.getTitulo(), tarefa2);
-    }
-
-
+//BUSCAR
     public List<TarefaDto> findAll() {
-        return mapTarefas.values().stream()
-                .sorted(Comparator.comparing(TarefaDto::getDataTermino))
+        return tarefaRepository.findAll().stream()
+                .sorted(Comparator.comparing(Tarefa::getDataTermino))
+                .map(this::toDto)
                 .collect(Collectors.toList());
     }
 
-
+//ADICIONAR
     public TarefaDto addNew(TarefaDto dto) {
-        mapTarefas.put(dto.getTitulo(), dto);
+        Tarefa tarefa = toEntity(dto);
+        tarefa = tarefaRepository.save(tarefa);
+        return toDto(tarefa);
+    }
+
+    // Método de conversão para implementar a verificação de atraso (Requisito: se a data de término tiver passado, indicar que está atrasada [3])
+    private TarefaDto toDto(Tarefa tarefa) {
+        TarefaDto dto = new TarefaDto(
+                tarefa.getid(),
+                tarefa.getitulo(),
+                tarefa.getdetalhamento (),
+                tarefa.getdataTermino()
+        );
+
+        if (tarefa.getDataTermino().isBefore(LocalDate.now())) {
+            dto.setatrasada(true);
+        }
+
         return dto;
     }
-}
+
+
+    // Método auxiliar para converter DTO para a Entidade (Necessário para o save no Repository)
+    private Tarefa toEntity(TarefaDto dto) {
+        Tarefa t = new Tarefa();
+        t.settitulo(dto.gettitulo());
+        t.setdescricao(dto.getdetalhamento());
+        t.setdataTermino(dto.getdataTermino());
+        return t;
+    }
+    }//fecha service
