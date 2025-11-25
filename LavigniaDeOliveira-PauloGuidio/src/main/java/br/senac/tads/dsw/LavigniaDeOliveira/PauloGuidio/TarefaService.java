@@ -1,11 +1,9 @@
 package br.senac.tads.dsw.LavigniaDeOliveira.PauloGuidio;
-
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 @Service
 public class TarefaService {
@@ -32,26 +30,30 @@ public TarefaService(TarefaRepository tarefaRepository) {
     // Método de conversão para implementar a verificação de atraso (Requisito: se a data de término tiver passado, indicar que está atrasada [3])
     private TarefaDto toDto(Tarefa tarefa) {
         TarefaDto dto = new TarefaDto(
-                tarefa.getid(),
-                tarefa.getitulo(),
-                tarefa.getdetalhamento (),
-                tarefa.getdataTermino()
+            tarefa.getId(),
+            tarefa.getTitulo(),
+            tarefa.getResponsavel(),
+            tarefa.getDataTermino(),
+            tarefa.getDetalhamento(),
+            tarefa.isAtrasada()
         );
 
         if (tarefa.getDataTermino().isBefore(LocalDate.now())) {
-            dto.setatrasada(true);
+            dto.setAtrasada(true);
         }
 
         return dto;
     }
 
-
     // Método auxiliar para converter DTO para a Entidade (Necessário para o save no Repository)
     private Tarefa toEntity(TarefaDto dto) {
-        Tarefa t = new Tarefa();
-        t.settitulo(dto.gettitulo());
-        t.setdescricao(dto.getdetalhamento());
-        t.setdataTermino(dto.getdataTermino());
+        Tarefa t = new Tarefa(
+            dto.getTitulo(),
+            dto.getResponsavel(),
+            dto.getDataTermino(),
+            dto.getDetalhamento(),
+            dto.isAtrasada()
+        );
         return t;
     }
     }//fecha service
