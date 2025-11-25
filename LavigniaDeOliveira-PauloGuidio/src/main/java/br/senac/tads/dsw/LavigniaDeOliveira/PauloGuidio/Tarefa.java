@@ -1,38 +1,42 @@
 package br.senac.tads.dsw.LavigniaDeOliveira.PauloGuidio;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
-public class TarefaDto {
+@Entity
+public class Tarefa {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank(message = "O título é obrigatório")
-    @Size(min = 3, max = 100)
     private String titulo;
-
-    @NotBlank(message = "O responsável é obrigatório")
     private String responsavel;
-
-    @NotNull(message = "A data de término é obrigatória")
     private LocalDate dataTermino;
 
-    @Size(max = 500)
+    @Column(length = 500)
     private String detalhamento;
 
-    public TarefaDto() {
+    public Tarefa() {
     }
 
-    public TarefaDto(Integer id, String titulo, String responsavel, LocalDate dataTermino, String detalhamento) {
-        this.id = id;
-        this.titulo = titulo;
-        this.responsavel = responsavel;
-        this.dataTermino = dataTermino;
-        this.detalhamento = detalhamento;
+
+    public Tarefa(TarefaDto dto) {
+        this.titulo = dto.getTitulo();
+        this.responsavel = dto.getResponsavel();
+        this.dataTermino = dto.getDataTermino();
+        this.detalhamento = dto.getDetalhamento();
     }
+
+
+    public void atualizar(TarefaDto dto) {
+        this.titulo = dto.getTitulo();
+        this.responsavel = dto.getResponsavel();
+        this.dataTermino = dto.getDataTermino();
+        this.detalhamento = dto.getDetalhamento();
+    }
+
 
     public Integer getId() {
         return id;

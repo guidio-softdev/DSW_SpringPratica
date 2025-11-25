@@ -12,49 +12,64 @@
     </style>
     <link rel="stylesheet" href="style.css"> </head>
 
-<body>
-<div class="container">
-    <h1>Gerenciador de Tarefas</h1>
-
-    <div id="message-area" class="message-area"></div>
-
-    <div id="task-list-view">
-        <div id="task-list"></div>
-        <button id="btn-show-form">Incluir nova tarefa</button>
-    </div>
-
-    <div id="task-form-view" class="hidden">
-        <h2>Nova tarefa</h2>
-        <form id="task-form">
-            <div class="form-group">
-                <label for="titulo">Título</label>
-                <input type="text" id="titulo" name="titulo" required>
+    <body>
+        <div class="container">
+            <h1>Gerenciador de Tarefas</h1>
+        
+            <div id="message-area" class="message-area hidden"></div>
+        
+            <div id="task-list-view">
+                <div id="task-list"></div>
+                <button id="btn-show-form">Incluir nova tarefa</button>
             </div>
-
-            <div class="form-group">
-                <label>Responsáveis</label>
-                <div id="responsaveis-container">
-                    <div class="responsavel-input-group">
-                        <input type="text" name="responsavel" class="responsavel-input" placeholder="Nome do responsável" required>
+        
+            <div id="task-form-view" class="hidden">
+                <h2 id="form-title">Nova tarefa</h2>
+                <form id="task-form">
+                    <input type="hidden" id="task-id">
+                    
+                    <div class="form-group">
+                        <label for="titulo">Título</label>
+                        <input type="text" id="titulo" name="titulo" required>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="responsavel">Responsável</label>
+                        <input type="text" id="responsavel" name="responsavel" required>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="dataTermino">Data de término</label>
+                        <input type="date" id="dataTermino" name="dataTermino" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="detalhamento">Detalhamento</label>
+                        <textarea id="detalhamento" name="detalhamento" rows="4"></textarea>
+                    </div>
+                    
+                    <div class="form-buttons">
+                        <button type="submit" class="btn-salvar">Salvar</button>
+                        <button type="button" id="btn-cancel" class="btn-cancelar">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        
+            <div id="modal-confirmacao" class="modal hidden">
+                <div class="modal-content">
+                    <p id="msg-confirmacao">Deseja excluir a tarefa?</p>
+                    <div class="form-buttons">
+                        <button id="btn-confirmar-exclusao" class="btn-salvar" style="background-color: #dc3545;">SIM</button>
+                        <button id="btn-cancelar-exclusao" class="btn-cancelar">NÃO</button>
                     </div>
                 </div>
-                <button type="button" id="btn-add-responsavel">+ Adicionar Responsável</button>
             </div>
-            <div class="form-group">
-                <label for="dataTermino">Data de término</label>
-                <input type="date" id="dataTermino" name="dataTermino" required>
-            </div>
-            <div class="form-group">
-                <label for="detalhamento">Detalhamento</label>
-                <textarea id="detalhamento" name="detalhamento" rows="4"></textarea>
-            </div>
-            <div class="form-buttons">
-                <button type="submit" class="btn-salvar">Salvar</button>
-                <button type="button" id="btn-cancel" class="btn-cancelar">Cancelar</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<script src="script.js" defer></script> </body>
+        
+            <footer>
+                <p>Lavignia de Oliveira / Paulo Guidio / Turma 3B / 2025</p>
+            </footer>
+        </div>
+        
+        <script src="script.js" defer></script> 
+        </body>
 </html>

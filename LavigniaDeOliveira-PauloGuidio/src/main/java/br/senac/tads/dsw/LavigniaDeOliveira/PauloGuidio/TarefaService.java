@@ -1,47 +1,48 @@
 package br.senac.tads.dsw.LavigniaDeOliveira.PauloGuidio;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.time.LocalDate;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
 public class TarefaService {
 
-    private final Map<String, TarefaDto> mapTarefas;
-
-    public TarefaService() {
-        mapTarefas = new HashMap<>();
-
-
-        TarefaDto tarefa1 = new TarefaDto(
-                "Fazer almoço da semana",
-                "Fulano da Silva",
-                LocalDate.parse("2025-09-20"),
-                "Preparar o almoço para família");
-        mapTarefas.put(tarefa1.getTitulo(), tarefa1);
-
-        TarefaDto tarefa2 = new TarefaDto(
-                "Prova de DSW",
-                "Ciclano de Souza",
-                LocalDate.parse("2025-10-11"),
-                "Preparar o resumo da prova para usar como consulta");
-        mapTarefas.put(tarefa2.getTitulo(), tarefa2);
-    }
-
+    @Autowired
+    private TarefaRepository repository;
 
     public List<TarefaDto> findAll() {
-        return mapTarefas.values().stream()
-                .sorted(Comparator.comparing(TarefaDto::getDataTermino))
+        return repository.findAll().stream()
+                .sorted(Comparator.comparing(Tarefa::getDataTermino))
+                .map(t -> new TarefaDto(t.getId(), t.getTitulo(), t.getResponsavel(), t.getDataTermino(), t.getDetalhamento()))
                 .collect(Collectors.toList());
     }
 
+    public TarefaDto findById(Integer id) {
+        Tarefa t = repository.findById(id).orElseThrow(() -> new RuntimeException("Tarefa não encontrada"));
+        return new TarefaDto(t.getId(), t.getTitulo(), t.getResponsavel(), t.getDataTermino(), t.getDetalhamento());
+    }
 
     public TarefaDto addNew(TarefaDto dto) {
-        mapTarefas.put(dto.getTitulo(), dto);
+        Tarefa tarefa = new Tarefa(dto);
+        tarefa = repository.save(tarefa);
+        dto.setId(tarefa.getId());
         return dto;
+    }
+
+    public TarefaDto update(Integer id, TarefaDto dto) {
+        Tarefa tarefa = repository.findById(id).orElseThrow(() -> new RuntimeException("Tarefa não encontrada"));
+        tarefa.atualizar(dto);
+        repository.save(tarefa);
+        dto.setId(id);
+        return dto;
+    }
+
+    public void delete(Integer id) {
+        if (!repository.existsById(id)) {
+            throw new RuntimeException("Tarefa não encontrada");
+        }
+        repository.deleteById(id);
     }
 }
